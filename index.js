@@ -1,9 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-dotenv.config();
+const morgan = require('morgan');
 
+
+
+dotenv.config();
 const app = express();
+app.use(morgan('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -22,9 +27,13 @@ connetDb()
 const RouterUser =  require('./src/router/userRouter')
 const RouterHotel =  require('./src/router/hotelRouter')
 const RouterAuth = require('./src/router/authRouter')
+const RouterRoom = require('./src/router/roomRouter')
+
+
 app.use('/api/user', RouterUser);
 app.use('/api/hotel', RouterHotel);
 app.use('/api/auth',RouterAuth)
+app.use('/api/room',RouterRoom)
 app.get('/' , async (req,res) => {
     console.log("Minh")
     res.status(200).json({"minh" : "Minh"});
