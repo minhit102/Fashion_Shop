@@ -1,5 +1,6 @@
 const User = require('../models/user');
-exports.updateUser = async(req, res) => {
+const jwt = require('jsonwebtoken');
+exports.updateUser = async (req, res) => {
     try {
         let userId = req.params.id
         let findUser = await User.findById(userId);
@@ -26,7 +27,7 @@ exports.updateUser = async(req, res) => {
         return res.status(200).json({
             status: 1,
             message: "Update User Success",
-            user : UserUpdate
+            user: UserUpdate
         })
 
 
@@ -73,12 +74,12 @@ exports.deleteUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
     try {
-        
+
         let findUsers = await User.find({});
         return res.status(200).json({
             status: 1,
             message: "Get List User Success",
-            listUser : findUsers
+            listUser: findUsers
         })
 
 
@@ -109,7 +110,7 @@ exports.getUserDetail = async (req, res) => {
         return res.status(200).json({
             status: 1,
             message: "Get Detail User Success",
-            User : findUser
+            User: findUser
         })
 
 
@@ -124,4 +125,22 @@ exports.getUserDetail = async (req, res) => {
         });
 
     }
+}
+
+exports.getProfile = async (req, res) => {
+    const user = req.user;
+    if (!user) {
+        res.status(404).json({
+            status: 3,
+            message: "User not exits"
+        })
+    }
+    else {
+        res.status(200).json({
+            status: 1,
+            message: "Get information success",
+            user: user,
+        })
+    }
+
 }

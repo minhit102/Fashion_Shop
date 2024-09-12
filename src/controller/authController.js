@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 exports.createUser = async (req, res) => {
     try {
-        let { username, email, password, role ,birthday } = req.body
+        let { username, email, password, role, birthday } = req.body
         const saltRounds = 10;
         const salt = bcrypt.genSaltSync(saltRounds);
         const hash = bcrypt.hashSync(password, salt);
@@ -13,7 +13,7 @@ exports.createUser = async (req, res) => {
             email: email,
             password: hash,
             role: role,
-            birthday : birthday
+            birthday: birthday
         })
         res.status(200).json({
             status: 1,
@@ -77,3 +77,14 @@ exports.login = async (req, res) => {
         //return next(new ServerExpection(error))
     }
 }
+
+exports.logout = async (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1]; // Lấy token từ header
+
+    if (!token) {
+        return res.status(400).json({ message: 'No token provided' });
+    }
+
+    res.status(200).json({ message: 'Logout successful' });
+
+} 

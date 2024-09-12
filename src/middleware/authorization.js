@@ -5,6 +5,7 @@ exports.authenToken = (roles) => {
     return async (req, res, next) => {
         try {
             const authorizationHeader = req.headers['authorization'];
+            console.log("authen   :    " + authorizationHeader)
             if (!authorizationHeader) {
                 return res.status(401).json({
                     status: 0,
@@ -35,7 +36,7 @@ exports.authenToken = (roles) => {
                         message: "User does not have access"
                     });
                 }
-                console.log(data)
+
                 // Find user
                 const userAuthen = await User.findById(data._id);
                 if (!userAuthen) {
