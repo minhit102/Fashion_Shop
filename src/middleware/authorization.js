@@ -45,7 +45,7 @@ exports.authenToken = (roles) => {
                         message: "User not found"
                     });
                 }
-
+                console.log("MInh : " + userAuthen)
                 // Attach user to request object and proceed
                 req.user = userAuthen;
                 next();

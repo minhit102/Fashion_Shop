@@ -36,12 +36,15 @@ const RouterUser = require('./src/router/userRouter')
 const RouterHotel = require('./src/router/hotelRouter')
 const RouterAuth = require('./src/router/authRouter')
 const RouterRoom = require('./src/router/roomRouter')
+const RouterBooking = require('./src/router/bookingRouter')
 
 
 app.use('/api/user', RouterUser);
 app.use('/api/hotel', RouterHotel);
 app.use('/api/auth', RouterAuth)
 app.use('/api/room', RouterRoom)
+app.use('/api/booking', RouterBooking)
+
 app.get('/', async (req, res) => {
     console.log("Minh")
     res.status(200).json({ "minh": "Minh" });

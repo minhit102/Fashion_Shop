@@ -12,11 +12,7 @@ const BookingSchema = new mongoose.Schema({
         ref: 'Room', // Liên kết với Room schema
         required: true,
     },
-    hotel_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Hotel', // Liên kết với Hotel schema
-        required: true,
-    },
+
     check_in_date: {
         type: Date,
         required: true,
