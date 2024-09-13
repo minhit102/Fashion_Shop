@@ -5,9 +5,9 @@ const RoomSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    hotel_id : {
-        type : String,
-        required : true
+    hotel_id: {
+        type: String,
+        required: true
     },
     price: {
         type: String,
@@ -37,6 +37,10 @@ const RoomSchema = new mongoose.Schema({
         min: 0,
         max: 5,
     },
+    isAvailable: {
+        type: Boolean,
+        default: true, // Mặc định phòng còn trống
+    }
 },
     {
         timestamps: true

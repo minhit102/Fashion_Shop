@@ -179,3 +179,49 @@ exports.getRoomDetail = async (req, res) => {
 
     }
 }
+
+
+exports.updateisAvailableRoom = async (req, res) => {
+    try {
+        let roomId = req.params.id;
+
+        // Tìm phòng theo ID
+        let findRoom = await Room.findById(roomId);
+        if (!findRoom) {
+            return res.status(404).json({
+                status: 0,
+                message: `Room with id ${roomId} does not exist.`
+            });
+        }
+
+        // Lấy thông tin từ request body
+        let {
+            isAvailable
+        } = req.body;
+
+
+        let updatedRoom = await Room.findByIdAndUpdate(
+            roomId,
+            {
+                isAvailable
+            },
+            { new: true } // Để trả về đối tượng phòng đã được cập nhật
+        );
+
+        // Trả về phản hồi thành công
+        return res.status(200).json({
+            status: 1,
+            message: "Update isAvailable Room Success",
+            room: updatedRoom // Sửa lại từ `user` thành `room` để khớp với dữ liệu
+        });
+    } catch (error) {
+        console.error('Error updating room:', error.message); // Ghi lại lỗi để phân tích
+
+        // Trả về phản hồi lỗi
+        return res.status(500).json({
+            status: 0,
+            message: 'An error occurred while updating the room.',
+            error: error.message // Thông điệp lỗi từ catch
+        });
+    }
+};
