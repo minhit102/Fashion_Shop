@@ -17,16 +17,10 @@ const RoomSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    maxPeople: {
-        type: Number,
-        require: true,
-    },
-    roomNumber: {
-        type: Number,
+    roomType: {
+        type: Schema.Types.ObjectId,
+        ref: 'RoomType', // Liên kết với Room schema
         required: true,
-    },
-    photo: {
-        type: [String],
     },
     desc: {
         type: String,
