@@ -1,19 +1,31 @@
 const User = require('../models/user')
-const ServerExpection = require('../utils/ServerExpection')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { isExitsEmail } = require('../service/serviceUser')
 exports.createUser = async (req, res) => {
     try {
-        let { username, email, password, role, birthday } = req.body
+        let { username, email, password, isAdmin, phone, address } = req.body
+        console.log(await isExitsEmail(email));
+        console.log(!(await isExitsEmail(email)));
+
+        if (!(await isExitsEmail(email))) {
+            return res.status(409).json({
+                status: 0,
+                message: "Email already exists"
+            })
+        }
         const saltRounds = 10;
         const salt = bcrypt.genSaltSync(saltRounds);
         const hash = bcrypt.hashSync(password, salt);
+
+
         const user = await User.create({
             username: username,
             email: email,
             password: hash,
-            role: role,
-            birthday: birthday
+            phone: phone,
+            address: address,
+            isAdmin: isAdmin,
         })
         res.status(200).json({
             status: 1,

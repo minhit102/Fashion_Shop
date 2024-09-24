@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
-const UserSchema = new mongoose.Schema({
+// Định nghĩa schema cho người dùng
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     email: {
         type: String,
@@ -13,25 +12,38 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: true
     },
-    birthday: {
-        day: {
-            type: Number
-        },
-        month: {
-            type: Number
-        },
-        year: {
-            type: Number
-        }
+    phone: {
+        type: String,
+        require: true
     },
     role: {
         type: String,
-        enum: ['sale', 'admin', 'user'],
-        required: true
+        require: true,
+        enum: ['User', 'Admin']
     },
-}, { timestamps: true })
+    address: {
+        street: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', userSchema);
+
+
 module.exports = User;

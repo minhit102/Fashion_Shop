@@ -5,8 +5,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 
-
-
 dotenv.config();
 const app = express();
 
@@ -22,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const connetDb = async () => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/Booking')
+        await mongoose.connect('mongodb://localhost:27017/fashionshop')
             .then(() => console.log('Connected!'));
 
     } catch (error) {
@@ -31,24 +29,14 @@ const connetDb = async () => {
 }
 connetDb()
 
-
-const RouterUser = require('./src/router/userRouter')
-const RouterHotel = require('./src/router/hotelRouter')
 const RouterAuth = require('./src/router/authRouter')
-const RouterRoom = require('./src/router/roomRouter')
-const RouterBooking = require('./src/router/bookingRouter')
+app.use('/api/auth', RouterAuth);
 
-
-app.use('/api/user', RouterUser);
-app.use('/api/hotel', RouterHotel);
-app.use('/api/auth', RouterAuth)
-app.use('/api/room', RouterRoom)
-app.use('/api/booking', RouterBooking)
 
 app.get('/', async (req, res) => {
     console.log("Minh")
     res.status(200).json({ "minh": "Minh" });
 })
-app.listen(8800, () => {
+app.listen(5500, () => {
     console.log('Run')
 })
