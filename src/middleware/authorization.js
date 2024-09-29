@@ -5,7 +5,6 @@ exports.authenToken = (roles) => {
     return async (req, res, next) => {
         try {
             const authorizationHeader = req.headers['authorization'];
-            console.log("authen   :    " + authorizationHeader)
             if (!authorizationHeader) {
                 return res.status(401).json({
                     status: 0,
@@ -37,7 +36,6 @@ exports.authenToken = (roles) => {
                     });
                 }
 
-                // Find user
                 const userAuthen = await User.findById(data._id);
                 if (!userAuthen) {
                     return res.status(404).json({
@@ -45,8 +43,6 @@ exports.authenToken = (roles) => {
                         message: "User not found"
                     });
                 }
-                console.log("MInh : " + userAuthen)
-                // Attach user to request object and proceed
                 req.user = userAuthen;
                 next();
             });

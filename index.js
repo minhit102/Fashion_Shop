@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
 
 
 dotenv.config();
@@ -17,7 +18,7 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use('/api/uploads', express.static(path.join(__dirname, 'src/uploads')));
 const connetDb = async () => {
     try {
         await mongoose.connect('mongodb://localhost:27017/fashionshop')

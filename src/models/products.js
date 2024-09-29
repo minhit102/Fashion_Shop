@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-    name: {
+    nameProduct: {
         type: String,
         required: true
     },
@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        default: "http://localhost:5500/api/uploads/default-product.png"
     },
     countInStock: {
         type: Number,

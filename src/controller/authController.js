@@ -1,14 +1,20 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { isExitsEmail } = require('../service/serviceUser')
+const { isEmailExists } = require('../service/userService')
 exports.createUser = async (req, res) => {
     try {
-        let { username, email, password, isAdmin, phone, address } = req.body
-        console.log(await isExitsEmail(email));
-        console.log(!(await isExitsEmail(email)));
+        let { username, email, password, role, phone, address } = req.body
 
-        if (!(await isExitsEmail(email))) {
+        if (!email || !password || !username) {
+            return res.status(400).json({
+                status: 0,
+                message: "Missing required fields"
+            });
+        }
+
+
+        if (await isEmailExists(email)) {
             return res.status(409).json({
                 status: 0,
                 message: "Email already exists"
@@ -25,19 +31,23 @@ exports.createUser = async (req, res) => {
             password: hash,
             phone: phone,
             address: address,
-            isAdmin: isAdmin,
+            role: role,
         })
         res.status(200).json({
             status: 1,
-            message: "Creat User or Admin success",
+            message: "Creat User success",
             user: user
         })
     }
     catch (error) {
-        console.log(error)
-        //return next(new ServerExpection(error))
+        res.status(500).json({ // Set the appropriate status code, e.g., 500 for Internal Server Error
+            status: 4, // Custom status code (can be whatever you choose)
+            message: error.message || "An unexpected error occurred." // Use error message or a default message
+        });
     }
 }
+
+
 exports.login = async (req, res) => {
     try {
         let { email, password } = req.body;
@@ -71,9 +81,11 @@ exports.login = async (req, res) => {
                 res.status(200).json({
                     status: 1,
                     message: "Login successful.",
+
                     accessToken: accessToken,
                     refreshToken: refreshToken,
                     user: findUser
+
                 })
             }
             else {
@@ -85,18 +97,44 @@ exports.login = async (req, res) => {
         }
     }
     catch (error) {
-        console.log(error)
-        //return next(new ServerExpection(error))
+        res.status(500).json({ // Set the appropriate status code, e.g., 500 for Internal Server Error
+            status: 4, // Custom status code (can be whatever you choose)
+            message: error.message || "An unexpected error occurred." // Use error message or a default message
+        });
     }
 }
 
 exports.logout = async (req, res) => {
-    const token = req.headers['authorization']?.split(' ')[1]; // Lấy token từ header
+    try {
+        const token = req.headers['authorization']?.split(' ')[1]; // Lấy token từ header
 
-    if (!token) {
-        return res.status(400).json({ message: 'No token provided' });
+        if (!token) {
+            return res.status(400).json({
+                status: 0,
+                message: 'No token provided'
+            });
+        }
+
+        res.status(200).json({
+            status: 1,
+            message: 'Logout successful'
+        });
+    }
+    catch (error) {
+        res.status(500).json({ // Set the appropriate status code, e.g., 500 for Internal Server Error
+            status: 4, // Custom status code (can be whatever you choose)
+            message: error.message || "An unexpected error occurred." // Use error message or a default message
+        });
     }
 
-    res.status(200).json({ message: 'Logout successful' });
 
-} 
+}
+
+exports.uploads = async (req, res) => {
+    const { id, img } = req.body;
+    res.status(200).json({
+        status: 1,
+        id: id,
+        img: img
+    })
+}

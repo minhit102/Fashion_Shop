@@ -1,7 +1,7 @@
 const User = require('../models/user');
 
 
-exports.isExitsEmail = async (email) => {
+exports.isEmailExists = async (email) => {
     const user = await User.findOne({ email: email })
     console.log("user1 : " + user)
     if (!user) {
