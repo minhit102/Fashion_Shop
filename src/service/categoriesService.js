@@ -5,9 +5,9 @@ const findCategory = async (id) => {
         const category = Category.find({ id: id })
 
         if (!category) {
-            return category;
+            return 0;
         }
-        return 0
+        return 1
 
     } catch (error) {
         console.error('Error finding category:', error);
