@@ -12,10 +12,6 @@ const cartItemSchema = new mongoose.Schema({
         required: true,
         min: 1
     },
-    image: {
-        type: String,
-        required: true
-    }
 });
 
 // Định nghĩa schema cho giỏ hàng

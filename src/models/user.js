@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         require: true,
-        enum: ['User', 'Admin']
+        enum: ['User', 'Admin', 'Sale']
     },
     address: {
         street: {

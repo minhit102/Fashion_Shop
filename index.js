@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
+const connetDb = require('./src/config/connectDB')
 
 
 dotenv.config();
@@ -18,26 +19,22 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+connetDb.connetDb()
 app.use('/api/uploads', express.static(path.join(__dirname, 'src/uploads')));
-const connetDb = async () => {
-    try {
-        await mongoose.connect('mongodb://localhost:27017/fashionshop')
-            .then(() => console.log('Connected!'));
-
-    } catch (error) {
-        console.log(error)
-    }
-}
-connetDb()
-
-const RouterAuth = require('./src/router/authRouter')
-app.use('/api/auth', RouterAuth);
 
 
+
+
+
+const AuthRouter = require('./src/router/authRouter');
+const ProductRouter = require('./src/router/productRouter')
+app.use('/api/auth', AuthRouter);
+app.use('/api/product', ProductRouter);
 app.get('/', async (req, res) => {
     console.log("Minh")
     res.status(200).json({ "minh": "Minh" });
 })
-app.listen(5500, () => {
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
     console.log('Run')
 })

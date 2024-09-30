@@ -28,7 +28,11 @@ const reviewSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    image: {
+        type: String,
+        required: false
+    },
 });
 
 // Tạo model từ schema

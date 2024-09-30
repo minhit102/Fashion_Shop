@@ -22,9 +22,9 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    image: {
+    imageURL: {
         type: String,
-        default: "http://localhost:5500/api/uploads/default-product.png"
+        default: `http://localhost:${process.env.PORT}/api/uploads/default-product.png`
     },
     countInStock: {
         type: Number,
