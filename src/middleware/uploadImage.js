@@ -1,6 +1,11 @@
 const multer = require('multer');
 const path = require('path');
 
+function replaceWhitespaceWithDash(str) {
+    return str.replace(/\s+/g, '-');
+}
+
+
 const MAX_SIZE = 5 * 1024 * 1024; // 5mb
 const storageImage = multer.diskStorage({
     destination: async function (req, file, cb) {
@@ -15,7 +20,9 @@ const storageImage = multer.diskStorage({
         }
     },
     filename: function (req, file, cb) {
-        cb(null, req.nameProduct + '-' + Date.now() + path.extname(file.originalname));
+        const { nameProduct } = req.body
+        const nameFile = replaceWhitespaceWithDash(nameProduct.trim())
+        cb(null, nameFile + '-' + Date.now() + path.extname(file.originalname));
     },
 });
 
