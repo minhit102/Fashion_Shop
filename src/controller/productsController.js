@@ -1,13 +1,13 @@
 
-const Category = require('../models/categories.js')
 const categoriesService = require('../service/userService')
+const Product = require('../models/products')
 
 
 exports.createProduct = async (req, res) => {
     try {
         let pathProductImage;
         if (!req.file) {
-            pathAvatar = 0;
+            pathProductImage = 0;
         }
         else {
             pathProductImage = `http://localhost:${process.env.PORT}/api/uploads/mainImage/${req.file.filename}`
@@ -18,28 +18,33 @@ exports.createProduct = async (req, res) => {
             price,
             brand,
             description,
-            image,
-            countInStock
+            countInStock,
         } = req.body;
 
-        //const findCategory = categoriesService(category_id);
-        /*if (!findCategory) {
-            return res.status(404).json({
-                status: 0,
-                message: "Category not exits"
-            })
-        }*/
+        const productData = {
+            nameProduct,
+            category_id,
+            price,
+            brand,
+            description,
+            countInStock
+        };
+        if (pathProductImage) {
+            productData.imageURL = pathProductImage;
+        }
+        const product = await Product.create(productData);
+
         res.status(200).json({
             status: 0,
             message: "Create product success",
-            imageUrl: pathProductImage,
-            name: nameProduct
-        })
+            product: product
+        });
     }
     catch (error) {
+        console.log("erroe :" + error)
         return res.status(404).json({
             status: 0,
-            message: "Error creat product"
+            message: "Error creat product",
         })
     }
 
