@@ -3,6 +3,7 @@ const categoriesService = require('../service/categoriesService')
 const Product = require('../models/products')
 const fs = require('fs')
 const path = require('path')
+const sortProduct = require('../utils/sortProduct')
 
 exports.createProduct = async (req, res) => {
     try {
@@ -46,8 +47,6 @@ exports.createProduct = async (req, res) => {
         });
     }
 };
-
-
 exports.updateProduct = async (req, res) => {
     try {
         const { productId } = req.params;
@@ -103,8 +102,38 @@ exports.updateProduct = async (req, res) => {
 
         });
     }
-
 };
+
+exports.getProduct = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 10
+        const category_id = parseInt(req.query.category_id)
+        const sort = req.query.sort
+
+
+        let filterProduct = await Product.find({ category_id: category_id });
+        filterProduct = sortProduct(filterProduct, sort);
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+
+        const listproduct = filterProduct.slice(startIndex, endIndex);
+        res.status(200).json({
+            status: 1,
+            page,
+            limit,
+            product: listproduct
+        })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            status: 0,
+            message: "Get product fail",
+        });
+    }
+};
+
 
 
 
