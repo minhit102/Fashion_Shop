@@ -103,7 +103,6 @@ exports.updateProduct = async (req, res) => {
         });
     }
 };
-
 exports.getProduct = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1
@@ -133,7 +132,30 @@ exports.getProduct = async (req, res) => {
         });
     }
 };
+exports.getDetailProduct = async (req, res) => {
+    try {
+        const { productId } = req.params
+        const product = await Product.findById(productId)
+        if (!product) {
+            return res.status(404).json({
+                status: 0,
+                message: "Product not exits"
+            })
+        }
+        res.status(200).json({
+            status: 1,
+            message: "Get detail success",
+            product: product
+        })
 
-
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).json({
+            status: 0,
+            message: "Error get detail Product"
+        })
+    }
+};
 
 
