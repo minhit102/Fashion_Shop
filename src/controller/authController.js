@@ -49,13 +49,23 @@ exports.createUser = async (req, res) => {
 
 
 exports.login = async (req, res) => {
+    let { emailOrPhone, password } = req.body;
+    if (!emailOrPhone || !password) {
+        res.status(400).json({
+            status: 0,
+            message: "Please enter complete information "
+        })
+    }
+
     try {
-        let { email, password } = req.body;
-        const findUser = await User.findOne({ email: email });
+
+        const findUser = await User.findOne({
+            $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
+        });
         if (!findUser) {
             res.status(404).json({
-                status: 3,
-                message: "Email not found."
+                status: 0,
+                message: "Email or Phone not found."
             })
         }
         else {
