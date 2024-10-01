@@ -15,10 +15,10 @@ router.put('/update-product/:productId',
     productsController.updateProduct);
 
 
-/*router.get('/get-all-product',
-    AuthenToken.authenToken(["Admin", "Sale", "User"]),
-    productsController.getAllProduct)
-
+router.get('/get-product',
+    // AuthenToken.authenToken(["Admin", "Sale", "User"]),
+    productsController.getProduct)
+/*
 router.get('/detail/:id',
     AuthenToken.authenToken(["Admin", "Sale", "User"]),
     productsController.getDetailProduct)
