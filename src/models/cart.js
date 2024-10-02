@@ -1,31 +1,28 @@
 const mongoose = require('mongoose');
 
-// Định nghĩa schema cho sản phẩm trong giỏ hàng
-const cartItemSchema = new mongoose.Schema({
-    product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Liên kết đến model Product
-        required: true
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        min: 1
-    },
-});
-
 // Định nghĩa schema cho giỏ hàng
 const cartSchema = new mongoose.Schema({
-    user: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Liên kết đến model User
-        required: true
+        ref: 'User',
+        required: true, // Thêm required nếu muốn đảm bảo người dùng phải có
     },
-    cartItems: [cartItemSchema], // Mảng các sản phẩm trong giỏ hàng
-    totalPrice: {
-        type: Number,
-        required: true
-    },
+    cartItems: [{
+        product_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product', // Liên kết đến model Product
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            min: 1
+        },
+        status: {
+            type: Boolean,
+            default: true // Nếu default = false thì sản phẩm không có sẵn
+        }
+    }],
     createdAt: {
         type: Date,
         default: Date.now

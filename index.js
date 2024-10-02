@@ -23,15 +23,17 @@ connetDb.connetDb()
 app.use('/api/uploads', express.static(path.join(__dirname, 'src/uploads')));
 
 
-
-
-
 const AuthRouter = require('./src/router/authRouter');
 const ProductRouter = require('./src/router/productRouter')
-const UserProduct = require('./src/router/userRouter')
+const UserRouter = require('./src/router/userRouter')
+const CartRouter = require('./src/router/cartRouter')
+
 app.use('/api/auth', AuthRouter);
 app.use('/api/product', ProductRouter);
-app.use('/api/user', UserProduct);
+app.use('/api/user', UserRouter);
+app.use('/api/cart', CartRouter)
+
+
 app.get('/', async (req, res) => {
     console.log("Minh")
     res.status(200).json({ "minh": "Minh" });
