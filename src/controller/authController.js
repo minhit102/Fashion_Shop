@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { isEmailExists } = require('../service/userService')
 exports.createUser = async (req, res) => {
     try {
-        let { username, email, password, role, phone, address } = req.body
+        let { username, email, password, role, phone, address, birthday } = req.body
 
         if (!email || !password || !username) {
             return res.status(400).json({
@@ -12,8 +12,6 @@ exports.createUser = async (req, res) => {
                 message: "Missing required fields"
             });
         }
-
-
         if (await isEmailExists(email)) {
             return res.status(409).json({
                 status: 0,
@@ -31,6 +29,7 @@ exports.createUser = async (req, res) => {
             password: hash,
             phone: phone,
             address: address,
+            birthday: birthday,
             role: role,
         })
         res.status(200).json({

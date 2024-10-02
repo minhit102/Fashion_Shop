@@ -16,7 +16,11 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        require: true
+        require: true,
+        unique: true
+    },
+    birthday: {
+        type: Date,
     },
     role: {
         type: String,
@@ -29,10 +33,6 @@ const userSchema = new mongoose.Schema({
             required: true
         },
         city: {
-            type: String,
-            required: true
-        },
-        country: {
             type: String,
             required: true
         }
