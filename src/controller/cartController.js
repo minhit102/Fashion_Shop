@@ -4,7 +4,7 @@ const Product = require('../models/products');
 exports.getCart = async (req, res) => {
     try {
         const user = req.user;
-        const cart = await Cart.findOne({ user_id: user._id })
+        const cart = await Cart.findOne({ user_id: user._id }).populate('cartItems.product_id')
         if (!cart || cart.cartItems.length === 0) {
             return res.status(200).json({
                 status: 0,

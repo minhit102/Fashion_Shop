@@ -12,12 +12,12 @@ router.put('/update/:id',
     //AuthenToken.authenToken(["Admin", "Sale"]),
     couponsController.updateCoupons);
 
-/*router.get('/get-coupons',
+router.get('/get-coupons',
     AuthenToken.authenToken(["User", "Admin", "Sale"]),
     couponsController.getCoupons);
 
-router.get('/get-detail/id',
-    AuthenToken.authenToken(["User", "Admin", "Sale"]),
-    couponsController.getCouponDtail);*/
+router.get('/get-detail/:id',
+    //AuthenToken.authenToken(["User", "Admin", "Sale"]),
+    couponsController.getCouponDetail);
 
 module.exports = router;

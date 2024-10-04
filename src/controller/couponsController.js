@@ -168,3 +168,54 @@ exports.updateCoupons = async (req, res) => {
     }
 
 }
+exports.getCoupons = async (req, res) => {
+    try {
+        const currentDate = new Date();
+        const listCoupon = await Coupon.find({
+            "isActive": true,
+            "validStart": { $lte: currentDate },
+            "validEnd": { $gte: currentDate }
+        });
+
+        res.status(200).json({
+            status: 0,
+            message: "Get list Coupons success",
+            coupons: listCoupon
+        })
+    }
+    catch (error) {
+        res.status(500).json({
+            status: 0,
+            message: "Get list Coupons fail",
+        })
+
+    }
+
+}
+exports.getCouponDetail = async (req, res) => {
+    try {
+        const id = req.params.id
+        const findCoupon = await Coupon.findById(id)
+        if (!findCoupon) {
+            return res.status(404).json({
+                status: 0,
+                message: "Coupon not exits",
+            })
+        }
+        res.status(200).json({
+            status: 1,
+            message: "Get detail Coupons success",
+            coupons: findCoupon
+        })
+
+
+    }
+    catch (error) {
+        res.status(500).json({
+            status: 0,
+            message: "Get detail Coupons fail",
+        })
+
+    }
+
+}
