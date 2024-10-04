@@ -27,11 +27,13 @@ const AuthRouter = require('./src/router/authRouter');
 const ProductRouter = require('./src/router/productRouter')
 const UserRouter = require('./src/router/userRouter')
 const CartRouter = require('./src/router/cartRouter')
+const CouponsRouter = require('./src/router/couponsRouter')
 
 app.use('/api/auth', AuthRouter);
 app.use('/api/product', ProductRouter);
 app.use('/api/user', UserRouter);
 app.use('/api/cart', CartRouter)
+app.use('/api/coupons', CouponsRouter)
 
 
 app.get('/', async (req, res) => {
