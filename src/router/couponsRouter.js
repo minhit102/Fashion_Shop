@@ -8,11 +8,11 @@ router.post('/add-coupons',
     //AuthenToken.authenToken(["Admin", "Sale"]),
     couponsController.creatCoupons);
 
-/*router.put('/update/:id',
-    AuthenToken.authenToken(["Admin", "Sale"]),
+router.put('/update/:id',
+    //AuthenToken.authenToken(["Admin", "Sale"]),
     couponsController.updateCoupons);
 
-router.get('/get-coupons',
+/*router.get('/get-coupons',
     AuthenToken.authenToken(["User", "Admin", "Sale"]),
     couponsController.getCoupons);
 
