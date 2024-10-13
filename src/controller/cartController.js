@@ -44,10 +44,11 @@ exports.getCart = async (req, res) => {
 
 exports.addItem = async (req, res) => {
     try {
-
-
         const user = req.user;
         let cart = await Cart.findOne({ user_id: user._id })
+        if (!cart) {
+            cart = await Cart.create({ user_id: user._id })
+        }
         const { productItems } = req.body;
         const product = await Product.findById(productItems.product_id)
         if (!product) {
