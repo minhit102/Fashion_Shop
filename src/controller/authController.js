@@ -50,7 +50,7 @@ exports.createUser = async (req, res) => {
 exports.login = async (req, res) => {
     let { emailOrPhone, password } = req.body;
     if (!emailOrPhone || !password) {
-        res.status(400).json({
+        return res.status(400).json({
             status: 0,
             message: "Please enter complete information "
         })
