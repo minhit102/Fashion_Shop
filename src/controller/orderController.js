@@ -1,7 +1,9 @@
 const Order = require('../models/order')
 const Product = require('../models/products');
 const User = require('../models/user');
-const Coupons = require('../models/coupons')
+const Coupons = require('../models/coupons');
+const mongoose = require('mongoose');
+const Coupon = require('../models/coupons');
 
 exports.creatOrder = async (req, res) => {
     try {
@@ -23,13 +25,8 @@ exports.creatOrder = async (req, res) => {
         } = req.body;
         let totalItem = 0;
         let totalPrice;
-
-
         const productIds = OrderItems.map((Item) => Item.product_id);
-
         const products = await Product.find({ _id: { $in: productIds } })
-
-
         for (let Item of OrderItems) {
             const product = products.find(p => p._id.toString() === Item.product_id)
             if (!product) {
@@ -47,11 +44,9 @@ exports.creatOrder = async (req, res) => {
             }
             totalItem += product.price * Item.quantity
         }
-
-
+        let coupon_aplly = false;
         if (coupon_id) {
             const coupon = await Coupons.findById(coupon_id)
-
             if (
                 !coupon.isActive ||
                 Date.now() <= coupon.validStart ||
@@ -69,8 +64,6 @@ exports.creatOrder = async (req, res) => {
                     message: "Order value is insufficient to apply the discount code."
                 })
             }
-
-
             let valueApply;
             if (coupon.discountType === 'percentage') {
                 const value = totalItem * coupon.discountValue / 100
@@ -80,6 +73,7 @@ exports.creatOrder = async (req, res) => {
                 valueApply = coupon.discountValue;
 
             }
+            coupon_aplly = true;
             totalPrice = Math.max(totalItem - valueApply + shippingPrice, 0)
         }
         else {
@@ -96,19 +90,35 @@ exports.creatOrder = async (req, res) => {
             totalPrice: totalPrice,
             coupon_id: coupon_id
         }
-        const newOrder = await Order.create(data)
+        const newOrder = new Order(data)
+        for (let Item of OrderItems) {
+            const product = await Product.findById(Item.product_id);
+            if (!product || product.countInStock < Item.quantity) {
+                return res.status(409).json({
+                    status: 0,
+                    message: "Requested quantity exceeds available stock.",
+                    availableStock: product.countInStock,
+                })
+            }
+            product.countInStock -= Item.quantity;
+            await product.save();
+        }
+        if (coupon_aplly) {
+            const coupon = await Coupon.findById(coupon_id);
+            coupon.usedCount += 1;
+            coupon.save()
+        }
+        await newOrder.save();
         res.status(200).json({
             status: 1,
             message: "Creat Order success ",
             order: newOrder
         })
     }
-
     catch (error) {
         res.status(500).json({
             status: 0,
             error: error
         })
-
     }
 }
