@@ -1,32 +1,26 @@
 const mongoose = require('mongoose');
-
-
-// Định nghĩa schema cho đơn hàng
-const orderItemSchema = new mongoose.Schema({
-    product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Liên kết đến model Product
-        required: true
-    },
-    quantity: {
-        type: Number,
-        required: true,
-        min: 1
-    },
-    price: {
-        type: Number,
-        required: true
-    },
-});
-
-// Định nghĩa schema cho đơn hàng
 const orderSchema = new mongoose.Schema({
-    user: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Liên kết đến model User
+        ref: 'User',
         required: true
     },
-    orderItems: [orderItemSchema], // Mảng các sản phẩm trong đơn hàng
+    OrderItems: [{
+        product_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true,
+            min: 1
+        },
+    }],
+    coupon_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Coupon',
+    },
     shippingAddress: {
         street: {
             type: String,
@@ -44,27 +38,8 @@ const orderSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: true,
-        enum: ['Cash', 'Bank Transfer']
+        enum: ['Cash', 'Bank']
     },
-    paymentResult: {
-        status: {
-            type: String,
-            required: true
-        },
-        update_time: {
-            type: Date,
-            required: true
-        },
-        email_address: {
-            type: String,
-            required: true
-        }
-    },
-    itemsPrice: { // Tông gia tri san phamr
-        type: Number,
-        required: true
-    },
-
     shippingPrice: {
         type: Number,
         required: true,
@@ -74,27 +49,20 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    isPaid: { // Ngay thanh toan
-        type: Boolean,
-        default: false
-    },
-    paidAt: {
-        type: Date
-    },
-    isDelivered: { // Trang thai giao hang
+    statusOrder: { // Trang thai giao hang
         type: String,
-        required: true,
-        enum: ['Pending', 'In Transit', 'Delivered', 'Canceled'],
-
+        enum: ['Pending', 'Shipped', 'Completed', 'Canceled', "Returned"],
+        default: 'Pending'
     },
     deliveredAt: {
         type: Date
     },
-    createdAt: {
+    dateOrder: {
         type: Date,
-        default: Date.now
+        required: true
+
     }
-});
+})
 
 // Tạo model từ schema
 const Order = mongoose.model('Order', orderSchema);

@@ -50,7 +50,7 @@ exports.addItem = async (req, res) => {
             cart = await Cart.create({ user_id: user._id })
         }
         const { productItems } = req.body;
-        const product = await Product.findById(productItems.product_id)
+        const product = await Product.findById(progitductItems.product_id)
         if (!product) {
             return res.status(404).json({
                 status: 0,
